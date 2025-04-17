@@ -1,5 +1,4 @@
-import { initializeApp } from "firebase-admin";
-import { cert, getApps } from "firebase-admin/app";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 import "server-only";
@@ -12,7 +11,7 @@ export const firebaseCert = cert({
     privateKey: decodedKey
 });
 
-if(getApps().length) {
+if(!getApps().length) {
     initializeApp({
         credential: firebaseCert,
         //storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
