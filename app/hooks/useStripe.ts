@@ -38,6 +38,29 @@ export function useStripe(){
         }
     }
 
+    async function createSubscriptionStripeCheckout(checkoutData: any) {
+        if (!stripe) return;
+
+        try {
+            const response = await fetch("/api/stripe/create-subscription-checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(checkoutData),
+            });
+
+            const data = await response.json();
+
+            await stripe.redirectToCheckout({
+                sessionId: data.id,
+            });
+
+        } catch (error) {
+            console.log("Error creating subscription checkout:", error);
+        }
+    }
+
     // This function handles the creation of a Stripe customer portal session
     async function handleCreateSpritePortal() {
         const response = await fetch("/api/stripe/create-portal", {
@@ -54,6 +77,7 @@ export function useStripe(){
     return {
         stripe,
         createPaymentStripeCheckout,
+        createSubscriptionStripeCheckout,
         handleCreateSpritePortal,
     };
 }
