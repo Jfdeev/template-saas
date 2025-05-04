@@ -1,65 +1,60 @@
-import { useState, useEffect } from "react";
-import { loadStripe, Stripe } from "@stripe/stripe-js";
+import { useState, useEffect } from "react"
+import { loadStripe, Stripe } from "@stripe/stripe-js"
 
-export function useStripe(){
-    const [stripe, setStripe] = useState<Stripe | null>(null);
+export function useStripe() {
+  const [stripe, setStripe] = useState<Stripe | null>(null)
 
-    // This hook loads the Stripe.js library and initializes a Stripe instance
-    useEffect(() => {
-        async function loadStripeAsync() {
-            const stripeInstance = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY!);
-            setStripe(stripeInstance);
-        }
+  useEffect(() => {
+    loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY!)
+      .then((inst) => setStripe(inst))
+      .catch((err) => console.error("Falha ao carregar Stripe.js", err))
+  }, [])
 
-        loadStripeAsync();
-    }, []);
-
-    // This function creates a Stripe Checkout session and redirects the user to the checkout page
-    async function createPaymentStripeCheckout(checkoutData: any) {
-        if (!stripe) return;
-
-        try {
-            const response = await fetch("/api/stripe/create-pay-checkout", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(checkoutData),
-            });
-
-            const data = await response.json();
-
-            await stripe.redirectToCheckout({
-                sessionId: data.id,
-            });
-
-        } catch (error) {
-            console.log("Error creating payment checkout:", error);
-        }
+  async function createPaymentStripeCheckout(checkoutData: any) {
+    if (!stripe) {
+      console.error("Stripe.js ainda não carregado")
+      return
     }
 
-    async function createSubscriptionStripeCheckout(checkoutData: any) {
-        if (!stripe) return;
-
-        try {
-            const response = await fetch("/api/stripe/create-subscription-checkout", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(checkoutData),
-            });
-
-            const data = await response.json();
-
-            await stripe.redirectToCheckout({
-                sessionId: data.id,
-            });
-
-        } catch (error) {
-            console.log("Error creating subscription checkout:", error);
-        }
+    try {
+      const res = await fetch("/api/stripe/create-pay-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(checkoutData),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        console.error("Erro na API:", data)
+        return
+      }
+      await stripe.redirectToCheckout({ sessionId: data.id })
+    } catch (err) {
+      console.error("Erro ao criar checkout de pagamento:", err)
     }
+  }
+
+  async function createSubscriptionStripeCheckout(checkoutData: any) {
+    if (!stripe) {
+      console.error("Stripe.js ainda não carregado")
+      return
+    }
+
+    try {
+      const res = await fetch("/api/stripe/create-subscription-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(checkoutData),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        console.error("Erro na API:", data)
+        return
+      }
+      await stripe.redirectToCheckout({ sessionId: data.id })
+    } catch (err) {
+      console.error("Erro ao criar checkout de assinatura:", err)
+    }
+  }
 
     // This function handles the creation of a Stripe customer portal session
     async function handleCreateSpritePortal() {

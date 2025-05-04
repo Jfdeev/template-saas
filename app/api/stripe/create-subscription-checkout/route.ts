@@ -1,16 +1,16 @@
 import { auth } from '@/app/lib/auth';
+import stripe from '@/app/lib/stripe';
 import { NextResponse, NextRequest } from 'next/server';
 import { getCustomerId } from '@/app/server/stripe/get-customer-id';
 
 export async function POST(req: NextRequest) {
     const {testId} = await req.json();
 
-    const price = process.env.STRIPE_PRICE_ID;
+    const price = process.env.STRIPE_SUBSCRIPTION_PRICE_ID;
 
     if (!price) {
         return new Response("Price ID not found", { status: 500 });
     }
-
 
     const session = await auth();
     const userId = session?.user?.id;
@@ -29,9 +29,7 @@ export async function POST(req: NextRequest) {
     //Precisamos criar um cliente na stripa para ter referencia ao criar o portal
 
     try {
-        const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY!);
-
-        const session = await stripe.billingPortal.sessions.create({
+        const session = await stripe.checkout.sessions.create({
             line_items: [
                 {
                     price,
@@ -40,7 +38,7 @@ export async function POST(req: NextRequest) {
             ],
             mode: "subscription",
             payment_method_types: ["card"],
-            sucess_url: `${req.headers.get("origin")}/success`,
+            success_url: `${req.headers.get("origin")}/success`,
             cancel_url: `${req.headers.get("origin")}/`,
             metadata,
             customer: customerId,
