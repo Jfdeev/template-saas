@@ -14,4 +14,21 @@ export async function POST(req: NextRequest) {
     }
 
     const event = stripe.webhooks.constructEvent(body, singnature, secret);
+
+    switch (event.type) {
+        case "checkout.session.completed":
+            break;
+        case "checkout.session.expired":
+            break;
+        case "checkout.session.async_payment_succeeded":
+            break;
+        case "checkout.session.async_payment_failed":
+            break;
+        case "customer.subscription.created":
+            break;
+        case "customer.subscription.updated":
+            break;
+        case "customer.subscription.deleted":
+            break;
+    }
 }
