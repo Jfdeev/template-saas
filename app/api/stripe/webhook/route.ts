@@ -24,11 +24,11 @@ export async function POST(req: NextRequest) {
             case "checkout.session.completed":
                 const metadata = event.data.object.metadata;
     
-                if(metadata?.price === process.env.SRIPE_PRICE_ID) {
+                if(metadata?.price === process.env.STRIPE_PRICE_ID) {
                     await handleStripePayment(event);
                 }
     
-                if(metadata?.price === process.env.SRIPE_SUBSCRIPTION_ID) {
+                if(metadata?.price === process.env.STRIPE_SUBSCRIPTION_ID) {
                     await handleStripeSubscription(event);
                 }
                 break;
