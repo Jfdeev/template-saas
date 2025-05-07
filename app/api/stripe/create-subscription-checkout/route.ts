@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
 
     const metadata = {
         testId,
+        price
     }
 
     //Precisamos criar um cliente na stripa para ter referencia ao criar o portal
