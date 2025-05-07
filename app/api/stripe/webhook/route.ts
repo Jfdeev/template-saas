@@ -1,8 +1,8 @@
 import stripe from "@/app/lib/stripe";
-import handleStripeSubscription from "@/app/server/stripe/handle-subscription";
-import handleStripePayment from "@/app/server/stripe/handle-payment";
+import { handleStripeSubscription } from "@/app/server/stripe/handle-subscription";
+import {handleStripePayment} from "@/app/server/stripe/handle-payment";
 import { headers } from "next/headers";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import handleStripeCancelSubscription from "@/app/server/stripe/handle-cancel";
 
 const secret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -10,7 +10,7 @@ const secret = process.env.STRIPE_WEBHOOK_SECRET;
 export async function POST(req: NextRequest) {
     try {
         
-        const body = await req.json();
+        const body = await req.text();
         const headersList = await headers();
         const singnature = headersList.get("stripe-signature");
     
@@ -50,8 +50,14 @@ export async function POST(req: NextRequest) {
             case "customer.subscription.deleted": // Assinatura cancelada
                 await handleStripeCancelSubscription(event);
                 break;
+            default:
+                console.log(`Unhandled event type ${event.type}`);
+                break;
         }
+
+        return NextResponse.json({ message: "WebHook Recived" }, { status: 200 });
     } catch (error) {
         console.error("Error processing webhook", error);
+        return NextResponse.json({ error: "Webhook Error" }, { status: 500 });
     }
 }
