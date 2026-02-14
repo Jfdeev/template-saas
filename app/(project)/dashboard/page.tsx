@@ -3,6 +3,8 @@ import { auth } from "@/app/lib/auth"
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function Dashboard() {
     // lado do server
     const session = await auth();
