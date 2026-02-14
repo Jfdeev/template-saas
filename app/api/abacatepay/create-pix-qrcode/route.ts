@@ -23,18 +23,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Security: never trust client for amount. Keep pricing server-side.
-  // Default: R$ 5,90 -> 590 cents.
   const configured = process.env.ABACATEPAY_PRICE_CENTS;
   const amount = configured ? Number(configured) : 590;
 
   if (!Number.isInteger(amount) || amount <= 0) {
     return NextResponse.json({ error: "Invalid ABACATEPAY_PRICE_CENTS" }, { status: 500 });
   }
-
-  // Keep request body optional for now (future-proof). If present, ignore it.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _ = req;
 
   const pix = await abacatepayFetch<PixQrCode>("/pixQrCode/create", {
     method: "POST",
