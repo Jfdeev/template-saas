@@ -4,10 +4,6 @@ import { getDb } from "@/app/lib/db";
 import { payments } from "@/app/lib/db/schema";
 import { NextRequest, NextResponse } from "next/server";
 
-type CreatePixBody = {
-  value: number;
-};
-
 type PixQrCode = {
   id: string;
   amount: number;
@@ -27,26 +23,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let body: CreatePixBody;
-  try {
-    body = (await req.json()) as CreatePixBody;
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  // Security: never trust client for amount. Keep pricing server-side.
+  // Default: R$ 5,90 -> 590 cents.
+  const configured = process.env.ABACATEPAY_PRICE_CENTS;
+  const amount = configured ? Number(configured) : 590;
+
+  if (!Number.isInteger(amount) || amount <= 0) {
+    return NextResponse.json({ error: "Invalid ABACATEPAY_PRICE_CENTS" }, { status: 500 });
   }
 
-  const value = Number(body.value);
-  if (!Number.isFinite(value) || value <= 0) {
-    return NextResponse.json({ error: "value must be a positive number" }, { status: 400 });
-  }
-
-  const amount = Math.round(value * 100);
+  // Keep request body optional for now (future-proof). If present, ignore it.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _ = req;
 
   const pix = await abacatepayFetch<PixQrCode>("/pixQrCode/create", {
     method: "POST",
     body: JSON.stringify({
       amount,
       expiresIn: 60 * 60, // 1h
-      description: "Pagamento avulso",
+      description: process.env.ABACATEPAY_DESCRIPTION ?? "Pagamento avulso",
       metadata: {
         userId,
       },

@@ -13,7 +13,6 @@ type CreatePixPaymentResponse = {
 };
 
 export default function PaymentPage() {
-    const [value, setValue] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [result, setResult] = useState<CreatePixPaymentResponse | null>(null);
@@ -43,9 +42,7 @@ export default function PaymentPage() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    value: Number(value),
-                }),
+                body: JSON.stringify({}),
             });
 
             const data: unknown = await res.json();
@@ -78,23 +75,14 @@ export default function PaymentPage() {
         <div className="flex flex-col gap-10 items-center justify-center h-screen">
             <h1 className="font-bold text-4xl">Pagamentos</h1>
             <div className="flex flex-col gap-3 w-full max-w-md">
-                <label className="flex flex-col gap-1">
-                    <span>Valor (R$)</span>
-                    <input
-                        className="border rounded-md px-2 py-1"
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        placeholder="Ex: 19.90"
-                        inputMode="decimal"
-                    />
-                </label>
+                <p>Plano: R$ 5,90 (pagamento único)</p>
 
                 <button
                     className="border rounded-md px-2 py-1 cursor-pointer disabled:opacity-50"
                     onClick={handleCreatePixPayment}
                     disabled={loading}
                 >
-                    {loading ? "Gerando Pix..." : "Gerar Pix (AbacatePay)"}
+                    {loading ? "Gerando Pix..." : "Gerar Pix de R$ 5,90 (AbacatePay)"}
                 </button>
 
                 {error && <p className="text-red-600">{error}</p>}
