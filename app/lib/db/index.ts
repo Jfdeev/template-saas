@@ -17,9 +17,6 @@ export function getDb() {
 
   const sql = neon(databaseUrl);
 
-  // drizzle-orm/neon-http expects a callable client(query, params, options)
-  // Neon v1+ requires conventional calls to go through sql.query(...)
-  // while still exposing sql.transaction for batch operations.
   const client = Object.assign(
     (query: string, params: unknown[], options?: unknown) =>
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,8 +29,6 @@ export function getDb() {
     }
   );
 
-  // drizzle's NeonQueryFunction typing expects the full Neon client shape.
-  // At runtime, drizzle only needs a callable client + transaction.
   cachedDb = drizzle(client as never, { schema });
   return cachedDb;
 }
