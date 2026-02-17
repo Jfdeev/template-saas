@@ -38,7 +38,6 @@ function verifyHmac(rawBody: string, signatureFromHeader: string, key: string) {
 export async function POST(req: NextRequest) {
   const db = getDb();
 
-  // 1) Secret in query param
   const expectedSecret = process.env.ABACATEPAY_WEBHOOK_SECRET;
   if (expectedSecret) {
     const provided = req.nextUrl.searchParams.get("webhookSecret");
@@ -47,7 +46,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 2) Optional HMAC signature
   const signature = req.headers.get("X-Webhook-Signature");
   const hmacKey = process.env.ABACATEPAY_PUBLIC_HMAC_KEY;
 

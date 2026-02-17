@@ -14,8 +14,9 @@ const interMono = Inter({
 
 
 export const metadata: Metadata = {
-  title: "Financias AI",
-  description: "Finanças com IA",
+  title: "Consultor Inteligente de Compras",
+  description:
+    "Monitore preços em múltiplas fontes, acompanhe histórico e receba recomendações sobre o melhor momento de comprar.",
 };
 
 export default function RootLayout({
@@ -26,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${interSans.variable} ${interMono.variable} bg-gray-100 antialiased`}
+        className={`${interSans.variable} ${interMono.variable} bg-gray-100 text-gray-900 antialiased`}
       >
         {children}
       </body>

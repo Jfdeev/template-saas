@@ -2,7 +2,7 @@ import { auth } from "@/app/lib/auth";
 import { abacatepayFetch } from "@/app/lib/abacatepay";
 import { getDb } from "@/app/lib/db";
 import { payments } from "@/app/lib/db/schema";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 type PixQrCode = {
   id: string;
@@ -13,7 +13,7 @@ type PixQrCode = {
   expiresAt: string;
 };
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   const db = getDb();
 
   const session = await auth();
