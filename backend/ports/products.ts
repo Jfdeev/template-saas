@@ -1,4 +1,4 @@
-import type { ConceptualProduct, CreateConceptualProductInput } from "../products/models";
+import type { ConceptualProduct, CreateConceptualProductInput } from "@/backend/domain/products/models";
 
 export type CreditsBalance = number;
 

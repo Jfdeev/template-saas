@@ -1,4 +1,4 @@
-import type { CreditsPort, ConceptualProductsPort } from "../../ports/products-ports";
+import type { CreditsPort, ConceptualProductsPort } from "@/backend/ports/products";
 
 export async function getProductsPageData(
   ports: { credits: CreditsPort; products: ConceptualProductsPort },

@@ -8,7 +8,6 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
-
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
   name: text("name"),
@@ -38,24 +37,20 @@ export const conceptualProducts = pgTable("conceptual_products", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
 
-  // Produto Conceitual (entidade econômica, não pertence a uma loja específica)
   name: text("name").notNull(),
   category: text("category").notNull(),
   brand: text("brand").notNull(),
   model: text("model").notNull(),
   versionGeneration: text("versionGeneration").notNull(),
 
-  // Especificações estruturadas
   storage: text("storage").notNull(),
   color: text("color").notNull(),
   voltage: text("voltage"),
   defaultCondition: text("defaultCondition").notNull(),
 
-  // Mercado
   marketRegion: text("marketRegion").notNull(),
   baseCurrency: text("baseCurrency").notNull(),
 
-  // Configurações de monitoramento
   collectionFrequencyMinutes: integer("collectionFrequencyMinutes").notNull(),
   monitorType: text("monitorType").notNull(),
 

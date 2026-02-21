@@ -1,5 +1,5 @@
 import { auth } from "@/app/lib/auth";
-import { getDashboardDataForUser } from "@/app/server/dashboard/service";
+import { getDashboardDataForUser } from "@/backend/container";
 import { redirect } from "next/navigation";
 import { AppShell } from "../_components/app-shell";
 

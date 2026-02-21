@@ -1,6 +1,6 @@
 import { auth } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
-import { getProductsDataForUser } from "@/app/server/products/service";
+import { getProductsDataForUser } from "@/backend/container";
 import { AppShell } from "../_components/app-shell";
 
 import { CreateProductModal } from "./create-product-modal";
@@ -90,3 +90,4 @@ export default async function ProductsPage() {
     </AppShell>
   );
 }
+

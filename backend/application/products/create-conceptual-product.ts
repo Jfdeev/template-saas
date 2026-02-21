@@ -1,5 +1,5 @@
-import type { CreateConceptualProductInput } from "../models";
-import type { CreateConceptualProductPort } from "../../ports/products-ports";
+import type { CreateConceptualProductInput } from "@/backend/domain/products/models";
+import type { CreateConceptualProductPort } from "@/backend/ports/products";
 
 export type CreateConceptualProductResult =
   | { ok: true; id: string }

@@ -1,7 +1,7 @@
 import { auth } from "@/app/lib/auth";
 import { NextResponse } from "next/server";
 
-import { createProductForUser, getProductsDataForUser } from "@/app/server/products/service";
+import { createProductForUser, getProductsDataForUser } from "@/backend/container";
 
 export async function GET() {
   const session = await auth();
@@ -59,3 +59,4 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ ok: true, id: result.id });
 }
+

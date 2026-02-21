@@ -1,12 +1,9 @@
-import "server-only";
+import type { CreditsPort, ConceptualProductsPort } from "@/backend/ports/products";
 
-import { getDb } from "@/app/lib/db";
-import { makeDrizzlePorts } from "../adapters/drizzle/products-ports";
-
-export async function getDashboardDataForUser(userId: string) {
-  const db = getDb();
-  const ports = makeDrizzlePorts(db);
-
+export async function getDashboardData(
+  ports: { credits: CreditsPort; products: ConceptualProductsPort },
+  userId: string
+) {
   const [creditsBalance, productsCount, products] = await Promise.all([
     ports.credits.getBalance(userId),
     ports.products.countByUserId(userId),

@@ -6,12 +6,11 @@ import type {
   CreditsPort,
   ConceptualProductsPort,
   TransactionPort,
-} from "@/app/core/ports/products-ports";
-import type { CreateConceptualProductInput } from "@/app/core/products/models";
-import { getDb } from "@/app/lib/db";
-import { conceptualProducts, users } from "@/app/lib/db/schema";
+} from "@/backend/ports/products";
+import type { CreateConceptualProductInput } from "@/backend/domain/products/models";
+import { conceptualProducts, users } from "@/backend/infra/db/schema";
 
-type DbLike = ReturnType<typeof getDb>;
+type DbLike = ReturnType<typeof import("@/backend/infra/db").getDb>;
 
 function makeCreditsPort(db: DbLike): CreditsPort {
   return {
@@ -104,7 +103,7 @@ function makeConceptualProductsPort(db: DbLike): ConceptualProductsPort {
   };
 }
 
-export function makeDrizzlePorts(db: DbLike) {
+export function makeDrizzleProductsPorts(db: DbLike) {
   return {
     credits: makeCreditsPort(db),
     products: makeConceptualProductsPort(db),
@@ -181,7 +180,7 @@ export function makeDrizzleCreateConceptualProductPort(db: DbLike): CreateConcep
 export function makeDrizzleTransactionPort(db: DbLike): TransactionPort {
   return {
     async runInTransaction<T>(fn: (ports: { credits: CreditsPort; products: ConceptualProductsPort }) => Promise<T>) {
-      return db.transaction(async (tx) => fn(makeDrizzlePorts(tx as unknown as DbLike)));
+      return db.transaction(async (tx) => fn(makeDrizzleProductsPorts(tx as unknown as DbLike)));
     },
   };
 }

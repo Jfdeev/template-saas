@@ -6,13 +6,13 @@ import type { NextAuthResult } from "next-auth";
 import Google from "next-auth/providers/google";
 import { and, eq } from "drizzle-orm";
 
-import { getDb } from "./db";
+import { getDb } from "@/backend/infra/db";
 import {
   accounts,
   sessions,
   users,
   verificationTokens,
-} from "./db/schema";
+} from "@/backend/infra/db/schema";
 
 let cachedNextAuth: ReturnType<typeof NextAuth> | null = null;
 

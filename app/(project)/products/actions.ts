@@ -2,7 +2,7 @@
 
 import { auth } from "@/app/lib/auth";
 import { revalidatePath } from "next/cache";
-import { createProductForUser } from "@/app/server/products/service";
+import { createProductForUser } from "@/backend/container";
 
 export type CreateProductState =
   | { ok: false; error?: string }
@@ -85,3 +85,4 @@ export async function createConceptualProduct(
 
   return { ok: true, id: result.id };
 }
+

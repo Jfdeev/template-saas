@@ -37,8 +37,7 @@ export async function abacatepayFetch<T>(
   }
 
   if (json.error) {
-    const message = json.error;
-    throw new Error(message);
+    throw new Error(json.error);
   }
 
   if (json.data === null) {
