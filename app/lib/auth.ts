@@ -4,6 +4,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import NextAuth from "next-auth";
 import type { NextAuthResult } from "next-auth";
 import Google from "next-auth/providers/google";
+import { and, eq } from "drizzle-orm";
 
 import { getDb } from "./db";
 import {
@@ -33,6 +34,17 @@ function getNextAuth() {
       sessionsTable: sessions,
       verificationTokensTable: verificationTokens,
     }),
+    events: {
+      createUser: async ({ user }) => {
+        // Primeiro login (primeira criação do usuário): dá 1 crédito grátis.
+        // Não sobrescreve caso já tenha sido ajustado manualmente.
+        if (!user?.id) return;
+        await db
+          .update(users)
+          .set({ creditsBalance: 1 })
+          .where(and(eq(users.id, user.id), eq(users.creditsBalance, 0)));
+      },
+    },
   });
 
   return cachedNextAuth;

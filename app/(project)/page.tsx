@@ -7,7 +7,7 @@ export default function Home() {
     <main className="min-h-screen bg-gray-50 pt-20">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
-          <div className="text-base font-semibold tracking-tight text-gray-900">PRICEFY</div>
+          <div className="text-base font-semibold tracking-tight text-gray-900">Pricefy</div>
 
           <nav className="hidden items-center gap-8 text-sm font-medium text-gray-600 md:flex">
             <a href="#como-funciona" className="hover:text-gray-900">
@@ -735,7 +735,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="precos" className="bg-white py-24">
+      <section id="precos" className="bg-gray-50 py-24">
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex flex-col items-center text-center">
             <Reveal>

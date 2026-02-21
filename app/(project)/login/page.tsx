@@ -1,20 +1,21 @@
 import { handleAuth } from "@/app/actions/handle-auth";
+import Link from "next/link";
 
 export default function Login() {
     return (
         <main className="min-h-screen bg-gray-50 pt-20">
             <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
-                    <a href="/" className="text-base font-semibold tracking-tight text-gray-900">
-                        PRICEFY
-                    </a>
+                    <Link href="/" className="text-base font-semibold tracking-tight text-gray-900">
+                        Pricefy
+                    </Link>
 
-                    <a
+                    <Link
                         href="/"
                         className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50"
                     >
                         Voltar
-                    </a>
+                    </Link>
                 </div>
             </header>
 
@@ -25,14 +26,14 @@ export default function Login() {
                             Acesso rápido
                         </div>
 
-                        <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-gray-900 md:text-5xl">
+                        <h1 className="mt-8 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
                             Entre para monitorar preços
                             <br />
                             <span className="text-blue-600">automaticamente</span>
                         </h1>
 
                         <p className="mx-auto mt-5 max-w-xl text-base text-gray-600 md:text-lg lg:mx-0">
-                            Faça login com Google e comece em minutos — sem cartão de crédito.
+                            Faça login com Google e comece em minutos, sem cartão de crédito.
                         </p>
 
                         <div className="mx-auto mt-8 grid max-w-xl grid-cols-1 gap-3 text-left text-sm text-gray-700 sm:grid-cols-2 lg:mx-0">

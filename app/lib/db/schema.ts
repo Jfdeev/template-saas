@@ -17,6 +17,52 @@ export const users = pgTable("users", {
   image: text("image"),
 
   hasPaidAccess: boolean("hasPaidAccess").notNull().default(false),
+
+  creditsBalance: integer("creditsBalance").notNull().default(0),
+});
+
+export const monitoredProducts = pgTable("monitored_products", {
+  id: text("id").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  url: text("url").notNull(),
+  isActive: boolean("isActive").notNull().default(true),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const conceptualProducts = pgTable("conceptual_products", {
+  id: text("id").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Produto Conceitual (entidade econômica, não pertence a uma loja específica)
+  name: text("name").notNull(),
+  category: text("category").notNull(),
+  brand: text("brand").notNull(),
+  model: text("model").notNull(),
+  versionGeneration: text("versionGeneration").notNull(),
+
+  // Especificações estruturadas
+  storage: text("storage").notNull(),
+  color: text("color").notNull(),
+  voltage: text("voltage"),
+  defaultCondition: text("defaultCondition").notNull(),
+
+  // Mercado
+  marketRegion: text("marketRegion").notNull(),
+  baseCurrency: text("baseCurrency").notNull(),
+
+  // Configurações de monitoramento
+  collectionFrequencyMinutes: integer("collectionFrequencyMinutes").notNull(),
+  monitorType: text("monitorType").notNull(),
+
+  discoveryStatus: text("discoveryStatus").notNull().default("PENDING"),
+
+  isActive: boolean("isActive").notNull().default(true),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });
 
 export const payments = pgTable("payments", {
@@ -90,4 +136,6 @@ export const schema = {
   verificationTokens,
   payments,
   paymentWebhookEvents,
+  monitoredProducts,
+  conceptualProducts,
 };
